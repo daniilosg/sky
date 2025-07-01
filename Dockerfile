@@ -1,3 +1,3 @@
 FROM nginx
 COPY src/usr/nginx/html
-EXPOSE 666
+EXPOSE 80
