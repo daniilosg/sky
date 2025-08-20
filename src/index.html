@@ -37,14 +37,7 @@
             background: linear-gradient(135deg, #dc2626, #b91c1c, #991b1b);
         }
         
-        .fixed-bar {
-            transform: translateY(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .fixed-bar.show {
-            transform: translateY(0);
-        }
+
         
         .accordion-content {
             max-height: 0;
@@ -54,6 +47,67 @@
         
         .accordion-content.open {
             max-height: 500px;
+        }
+        
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.7); }
+            100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+        }
+        
+        /* WhatsApp Modal */
+        .whatsapp-modal {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 1001;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-modal.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .whatsapp-modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            width: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px) scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .whatsapp-modal.show .whatsapp-modal-content {
+            transform: translateY(0) scale(1);
         }
         
         .loading-spinner {
@@ -83,10 +137,62 @@
             height: 40px;
         }
         
+        /* Campo de input personalizado */
+        #whatsapp {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            font-size: 18px;
+        }
+        
+        @media (min-width: 768px) {
+            #whatsapp {
+                font-size: 20px;
+            }
+        }
+        
+        #whatsapp:focus {
+            border-color: #9CA3AF;
+            box-shadow: 0 0 0 1px #9CA3AF;
+        }
+        
         /* Responsividade personalizada */
         @media (max-width: 768px) {
             .card-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            /* Otimização mobile para primeira dobra */
+            .mobile-form-priority {
+                min-height: 95vh;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+            
+            .mobile-header-compact {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+            
+            .mobile-section-spacing {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            .mobile-form-card {
+                margin-top: 0;
+                padding: 2rem;
+            }
+            
+            /* Reduz margem inferior dos títulos no mobile */
+            .mobile-title-spacing {
+                margin-bottom: 2rem !important;
+            }
+            
+            /* Ajusta altura da seção de formulário no mobile */
+            .mobile-form-priority {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
             }
         }
         
@@ -101,35 +207,8 @@
     </style>
 </head>
 <body class="min-h-screen bg-white">
-    <!-- Barra Fixa de Contato -->
-    <div id="fixedBar" class="fixed bottom-0 left-0 right-0 bg-orange-500 text-white py-3 shadow-2xl z-50 fixed-bar">
-        <div class="max-w-7xl mx-auto px-3 sm:px-4">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="flex items-center justify-center sm:justify-start">
-                    <svg class="icon icon-sm mr-2" viewBox="0 0 24 24">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                    <span class="text-sm sm:text-base lg:text-lg font-semibold text-center sm:text-left">
-                        Assine agora: 0800 010 4004
-                    </span>
-                </div>
-                <div class="flex space-x-2 sm:space-x-3 w-full sm:w-auto justify-center">
-                    <button onclick="openWhatsApp()" class="bg-green-500 text-white px-3 sm:px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center text-xs sm:text-sm flex-1 sm:flex-none justify-center">
-                        <svg class="icon-sm mr-1" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
-                        </svg>
-                        WhatsApp
-                    </button>
-                    <button onclick="makeCall()" class="bg-white text-orange-500 px-3 sm:px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-xs sm:text-sm flex-1 sm:flex-none justify-center">
-                        Ligar agora
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Seletor de Cidade com Logo -->
-    <div class="bg-gradient-to-r from-red-800 to-red-900 text-white py-3 shadow-md">
+    <div class="bg-gradient-to-r from-red-800 to-red-900 text-white py-3 shadow-md mobile-header-compact">
         <div class="max-w-7xl mx-auto px-4">
             <div class="hidden md:flex items-center justify-between">
                 <div class="flex items-center">
@@ -174,13 +253,78 @@
         </div>
     </div>
 
+    <!-- Formulário WhatsApp -->
+    <section id="whatsappFormSection" class="min-h-screen flex items-center justify-center py-20 md:py-32 bg-gradient-to-r from-red-800 to-red-900 relative overflow-hidden mobile-form-priority">
+        <div class="container mx-auto px-4">
+            <div class="max-w-md mx-auto">
+                <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 p-10 md:p-12 text-center transform-hover transition-all duration-300 relative z-10 hover:shadow-3xl hover:scale-105 mobile-form-card">
+                    <!-- Glow effect -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-green-400/5 via-transparent to-orange-400/5 rounded-3xl"></div>
+                    <div class="relative z-10">
+                    <div class="mb-6">
+                        <!-- Logo + Nome Desktop -->
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="bg-red-600 rounded-full p-3 mr-3 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3 5a2 2 0 0 1 2-2h.28a1 1 0 0 1 .97.757l1.5 6A1 1 0 0 1 7.76 11H5a2 2 0 0 0-2 2v1a10 10 0 0 0 20 0v-1a2 2 0 0 0-2-2h-2.76a1 1 0 0 1-.97-1.243l1.5-6A1 1 0 0 1 19.72 3H20a2 2 0 0 1 2 2v.5a.5.5 0 0 1-1 0V5a1 1 0 0 0-1-1h-.28a.5.5 0 0 0-.487.379L17.74 10H21a1 1 0 0 1 1 1v1a11 11 0 0 1-22 0v-1a1 1 0 0 1 1-1h3.26l-1.481-5.621A.5.5 0 0 0 4.28 4H4a1 1 0 0 0-1 1v.5a.5.5 0 0 1-1 0V5z"/>
+                                </svg>
+                            </div>
+                            <span class="text-3xl md:text-4xl font-bold text-red-600 tracking-wider">DESKTOP</span>
+                        </div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Fale com um Consultor</h3>
+                        <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-8">Digite seu WhatsApp e fale com um consultor Desktop</p>
+                    </div>
+                    
+                    <form id="whatsappForm" class="space-y-6">
+                        <!-- Campos Hidden para UTMs e tracking -->
+                        <input type="hidden" id="gclid" name="gclid" value="">
+                        <input type="hidden" id="utm_campaign" name="utm_campaign" value="">
+                        <input type="hidden" id="utm_term" name="utm_term" value="">
+                        <input type="hidden" id="utm_content" name="utm_content" value="">
+                        <input type="hidden" id="utm_medium" name="utm_medium" value="">
+                        <input type="hidden" id="utm_source" name="utm_source" value="">
+                        <input type="hidden" id="fbc" name="fbc" value="">
+                        <input type="hidden" id="user_agent" name="user_agent" value="">
+                        <input type="hidden" name="form_type" value="whatsapp_main">
+                        
+                        <div class="relative">
+                            <input 
+                                type="tel" 
+                                id="whatsapp" 
+                                name="phone" 
+                                placeholder="(11) 9 1234-5678" 
+                                class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-0 focus:border-gray-400 outline-none transition-all duration-300 text-center font-normal text-lg md:text-xl bg-white text-gray-700 placeholder-gray-400"
+                                required
+                            >
+                        </div>
+                        
+                        <button 
+                            type="submit" 
+                            class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-lg md:text-xl shadow-lg hover:shadow-xl"
+                        >
+                            Iniciar conversa
+                            <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.89 3.487"/>
+                            </svg>
+                        </button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Elementos decorativos sutis -->
+        <div class="absolute -top-10 -left-10 w-20 h-20 bg-red-600 rounded-full opacity-20"></div>
+        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-red-500 rounded-full opacity-15"></div>
+    </section>
+
     <!-- Header com Planos -->
-    <div class="gradient-bg text-white py-20 relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="bg-gradient-to-br from-red-50 to-orange-50 text-gray-800 py-20 relative overflow-hidden mobile-section-spacing">
+
         <div class="relative max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h1 id="mainTitle" class="text-5xl font-bold mb-4 leading-tight">Planos Desktop</h1>
-                <p class="text-2xl opacity-90 font-light">Internet de alta velocidade com fibra óptica</p>
+            <div class="text-center mb-16 mobile-title-spacing">
+                <h1 id="mainTitle" class="text-5xl font-bold mb-4 leading-tight text-red-600">Planos Desktop</h1>
+                <p class="text-2xl font-light text-gray-700">Internet de alta velocidade com fibra óptica</p>
                 <div class="mt-6 inline-block bg-orange-500 text-white px-6 py-2 rounded-full font-semibold">
                     ✨ Oferta especial por tempo limitado
                 </div>
@@ -193,9 +337,9 @@
     </div>
 
     <!-- Seção Cliente -->
-    <div class="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="py-20 bg-gradient-to-br from-gray-50 to-gray-100 mobile-section-spacing">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 mobile-title-spacing">
                 <h2 id="clientTitle" class="text-4xl font-bold text-gray-800 mb-6">Já é cliente Desktop?</h2>
                 <p class="text-xl text-gray-600 mb-10">Acesse rapidamente a sua conta pessoal.</p>
                 <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -211,7 +355,7 @@
     </div>
 
     <!-- Seção Vantagens -->
-    <div class="py-20 bg-gradient-to-br from-red-50 to-orange-50">
+    <div class="py-20 bg-gradient-to-br from-red-50 to-orange-50 mobile-section-spacing">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-red-600 mb-16">Vantagens Desktop Internet Fibra</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -259,9 +403,9 @@
     </div>
 
     <!-- Seção FAQ -->
-    <div class="py-20 bg-white">
+    <div class="py-20 bg-white mobile-section-spacing">
         <div class="max-w-5xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 mobile-title-spacing">
                 <h2 id="faqTitle" class="text-4xl font-bold text-red-600 mb-4">FAQ Desktop Internet</h2>
                 <p class="text-xl text-gray-600">Tire suas dúvidas sobre nossos serviços</p>
             </div>
@@ -319,7 +463,6 @@
             plans: [],
             apiData: [],
             openFaq: null,
-            showFixedBar: false,
             loading: false
         };
 
@@ -470,25 +613,10 @@
                             ` : ''}
                         </div>
                         
-                        <div class="space-y-2 flex flex-col">
-                            <button onclick="makeCall()" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 px-4 rounded-xl font-bold transition-all duration-300 flex items-center text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                                <svg class="w-4 h-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                </svg>
-                                <div class="flex flex-col items-center text-center flex-1">
-                                    <span class="text-xs font-bold">ASSINE VIA</span>
-                                    <span class="text-xs font-bold">0800 010 4004</span>
-                                </div>
-                            </button>
-                            <button onclick="openWhatsApp()" class="w-full bg-white hover:bg-gray-50 text-gray-800 py-3 px-4 rounded-xl font-bold transition-all duration-300 border border-gray-200 hover:border-gray-300 flex items-center text-sm">
-                                <svg class="w-4 h-4 text-green-500 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
-                                </svg>
-                                <div class="flex flex-col items-center text-center flex-1">
-                                    <span class="text-xs font-bold">ASSINE VIA</span>
-                                    <span class="text-xs font-bold">WHATSAPP</span>
-                                </div>
-                            </button>
+                        <div class="mt-4">
+                            <a href="#whatsappFormSection" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1 no-underline">
+                                Assinar
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -719,9 +847,7 @@
             window.open('https://wa.me/5508000104004', '_blank');
         }
 
-        function makeCall() {
-            window.open('tel:08000104004', '_self');
-        }
+
 
         // Inicialização
         async function fetchData() {
@@ -768,19 +894,65 @@
             }
         }
 
-        function handleScroll() {
-            if (window.scrollY > 100 && !appState.showFixedBar) {
-                document.getElementById('fixedBar').classList.add('show');
-                appState.showFixedBar = true;
-            } else if (window.scrollY <= 100 && appState.showFixedBar) {
-                document.getElementById('fixedBar').classList.remove('show');
-                appState.showFixedBar = false;
+        // Função para gerar o fbc a partir do fbclid
+        function generateFBC(fbclid) {
+            if (fbclid) {
+                return 'fb.1.' + Math.floor(Date.now() / 1000) + '.' + fbclid;
+            } else {
+                return '';
             }
+        }
+        
+        // Função para capturar e preencher UTMs
+        function captureUTMParams() {
+            var paramList = [
+                'gclid',
+                'fbclid', 
+                'utm_campaign',
+                'utm_term',
+                'utm_content', 
+                'utm_medium',
+                'utm_source'
+            ];
+            
+            var urlParams = new URLSearchParams(window.location.search);
+            
+            // Preencher campos do formulário principal
+            paramList.forEach(function(param) {
+                var value = urlParams.get(param);
+                if (value && param !== 'fbclid') {
+                    var hiddenInput = document.getElementById(param);
+                    if (hiddenInput) {
+                        hiddenInput.value = value;
+                    }
+                    
+                    // Também preencher no formulário flutuante
+                    var floatInput = document.getElementById(param + 'Float');
+                    if (floatInput) {
+                        floatInput.value = value;
+                    }
+                }
+            });
+            
+            // Se existir fbclid, gera o fbc e insere no campo hidden
+            var fbclidValue = urlParams.get('fbclid');
+            if (fbclidValue) {
+                var fbc = generateFBC(fbclidValue);
+                document.getElementById('fbc').value = fbc;
+                document.getElementById('fbcFloat').value = fbc;
+            }
+            
+            // Pega o userAgent do usuário e insere no campo hidden
+            document.getElementById('user_agent').value = navigator.userAgent;
+            document.getElementById('user_agentFloat').value = navigator.userAgent;
         }
 
         function init() {
             // Configurar ano atual
             document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Capturar parâmetros UTM
+            captureUTMParams();
             
             // Inicializar com dados padrão
             updatePlansForCity(defaultData, '');
@@ -799,22 +971,193 @@
                 document.getElementById('citySelect').value = e.target.value;
             });
             
-            // Scroll listener com throttle
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        handleScroll();
-                        ticking = false;
-                    });
-                    ticking = true;
+            // Máscara de telefone - (nn) nnnn-nnnn para 10 dígitos ou (nn) n nnnn-nnnn para 11 dígitos
+            document.getElementById('whatsapp').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Limita a 11 dígitos
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
                 }
-            }, { passive: true });
+                
+                // Aplicar máscara baseada na quantidade de dígitos
+                if (value.length >= 2) {
+                    if (value.length <= 10) {
+                        // 10 dígitos: (nn) nnnn-nnnn
+                        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                        if (value.length < 14) { // Formatação parcial
+                            value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                        }
+                    } else {
+                        // 11 dígitos: (nn) n nnnn-nnnn
+                        value = value.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '($1) $2 $3-$4');
+                        if (value.length < 15) { // Formatação parcial
+                            if (value.length <= 9) {
+                                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                            } else {
+                                value = value.replace(/(\d{2})(\d{1})(\d+)/, '($1) $2 $3');
+                            }
+                        }
+                    }
+                }
+                
+                e.target.value = value;
+            });
             
+            // Envio do formulário WhatsApp principal
+            document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const whatsapp = document.getElementById('whatsapp').value;
+                const cleanWhatsapp = whatsapp.replace(/\D/g, '');
+                
+                if (cleanWhatsapp.length < 10) {
+                    alert('Por favor, digite um número de WhatsApp válido.');
+                    return;
+                }
+                
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = 'Enviando...';
+                submitButton.disabled = true;
+                
+                // Enviar webhook e aguardar conclusão
+                const formData = new URLSearchParams(new FormData(this)).toString();
+                fetch('https://n8nwb.crelo.net/webhook/whatsappdesktopeld', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                })
+                .then(function() {
+                    // Redirect na mesma página após sucesso do webhook
+                    window.location.href = 'https://wa.me/551940421001?text=Ola,%20pode%20me%20falar%20dos%20planos%20da%20desktop?';
+                })
+                .catch(function(error) {
+                    console.error('Erro no webhook:', error);
+                    // Mesmo com erro no webhook, redireciona
+                    window.location.href = 'https://wa.me/551940421001?text=Ola,%20pode%20me%20falar%20dos%20planos%20da%20desktop?';
+                });
+            });
+            
+            // Máscara de telefone para WhatsApp Flutuante - (nn) nnnn-nnnn para 10 dígitos ou (nn) n nnnn-nnnn para 11 dígitos
+            document.getElementById('whatsappFloat').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
+                }
+                
+                // Aplicar máscara baseada na quantidade de dígitos
+                if (value.length >= 2) {
+                    if (value.length <= 10) {
+                        // 10 dígitos: (nn) nnnn-nnnn
+                        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                        if (value.length < 14) { // Formatação parcial
+                            value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                        }
+                    } else {
+                        // 11 dígitos: (nn) n nnnn-nnnn
+                        value = value.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '($1) $2 $3-$4');
+                        if (value.length < 15) { // Formatação parcial
+                            if (value.length <= 9) {
+                                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                            } else {
+                                value = value.replace(/(\d{2})(\d{1})(\d+)/, '($1) $2 $3');
+                            }
+                        }
+                    }
+                }
+                
+                e.target.value = value;
+            });
+            
+            // Envio do formulário WhatsApp Flutuante
+            document.getElementById('whatsappFloatForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const whatsapp = document.getElementById('whatsappFloat').value;
+                const cleanWhatsapp = whatsapp.replace(/\D/g, '');
+                
+                if (cleanWhatsapp.length < 10) {
+                    alert('Por favor, digite um número de WhatsApp válido.');
+                    return;
+                }
+                
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = 'Enviando...';
+                submitButton.disabled = true;
+                
+                // Enviar webhook e aguardar conclusão
+                const formData = new URLSearchParams(new FormData(this)).toString();
+                fetch('https://n8nwb.crelo.net/webhook/whatsappdesktopeld', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                })
+                .then(function() {
+                    // Fechar modal e redirect na mesma página após sucesso do webhook
+                    closeWhatsAppModal();
+                    window.location.href = 'https://wa.me/551940421001?text=Ola,%20pode%20me%20falar%20dos%20planos%20da%20desktop?';
+                })
+                .catch(function(error) {
+                    console.error('Erro no webhook:', error);
+                    // Mesmo com erro no webhook, fecha modal e redireciona
+                    closeWhatsAppModal();
+                    window.location.href = 'https://wa.me/551940421001?text=Ola,%20pode%20me%20falar%20dos%20planos%20da%20desktop?';
+                });
+            });
+
             // Fetch data assíncrono
             setTimeout(fetchData, 100);
         }
 
+        // Funções do WhatsApp Flutuante
+        function toggleWhatsAppModal() {
+            const modal = document.getElementById('whatsappModal');
+            if (modal.classList.contains('show')) {
+                closeWhatsAppModal();
+            } else {
+                openWhatsAppModal();
+            }
+        }
+        
+        function openWhatsAppModal() {
+            const modal = document.getElementById('whatsappModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeWhatsAppModal() {
+            const modal = document.getElementById('whatsappModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Fechar modal ao clicar fora dele
+        function handleModalClick(event) {
+            const modal = document.getElementById('whatsappModal');
+            const modalContent = modal.querySelector('.whatsapp-modal-content');
+            
+            if (event.target === modal && !modalContent.contains(event.target)) {
+                closeWhatsAppModal();
+            }
+        }
+        
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('whatsappModal');
+                if (modal.classList.contains('show')) {
+                    closeWhatsAppModal();
+                }
+            }
+        });
+        
         // Inicializar quando o DOM estiver pronto
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
@@ -822,5 +1165,50 @@
             init();
         }
     </script>
+    
+    <!-- Botão Flutuante WhatsApp -->
+    <div class="whatsapp-float" onclick="toggleWhatsAppModal()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
+        </svg>
+    </div>
+    
+    <!-- Modal WhatsApp -->
+    <div id="whatsappModal" class="whatsapp-modal" onclick="handleModalClick(event)">
+        <div class="whatsapp-modal-content">
+            <button onclick="closeWhatsAppModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-700 text-base mb-4">Digite seu <b>WhatsApp</b>:</p>
+            </div>
+            
+            <form id="whatsappFloatForm" class="space-y-4">
+                <!-- Campos Hidden para UTMs e tracking -->
+                <input type="hidden" id="gclidFloat" name="gclid" value="">
+                <input type="hidden" id="utm_campaignFloat" name="utm_campaign" value="">
+                <input type="hidden" id="utm_termFloat" name="utm_term" value="">
+                <input type="hidden" id="utm_contentFloat" name="utm_content" value="">
+                <input type="hidden" id="utm_mediumFloat" name="utm_medium" value="">
+                <input type="hidden" id="utm_sourceFloat" name="utm_source" value="">
+                <input type="hidden" id="fbcFloat" name="fbc" value="">
+                <input type="hidden" id="user_agentFloat" name="user_agent" value="">
+                <input type="hidden" name="form_type" value="whatsapp_float">
+                
+                <div>
+                    <input type="tel" id="whatsappFloat" name="phone" placeholder="(11) 9 1234-5678" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none text-lg text-center" maxlength="16" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                    Iniciar Conversa
+                </button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
