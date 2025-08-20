@@ -162,16 +162,25 @@
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
             
-            /* Otimização mobile para primeira dobra */
+            /* Otimização mobile para primeira dobra - base conservadora */
             .mobile-form-priority {
-                min-height: 95vh;
-                padding-top: 1rem;
-                padding-bottom: 1rem;
+                min-height: 80vh;
+                padding-top: 4rem;
+                padding-bottom: 1.5rem;
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
             }
             
             .mobile-header-compact {
-                padding-top: 1rem;
-                padding-bottom: 1rem;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+            
+            /* Remove gap entre header e formulário no mobile */
+            body {
+                margin: 0;
+                padding: 0;
             }
             
             .mobile-section-spacing {
@@ -181,7 +190,7 @@
             
             .mobile-form-card {
                 margin-top: 0;
-                padding: 2rem;
+                padding: 1.5rem;
             }
             
             /* Reduz margem inferior dos títulos no mobile */
@@ -189,10 +198,103 @@
                 margin-bottom: 2rem !important;
             }
             
-            /* Ajusta altura da seção de formulário no mobile */
-            .mobile-form-priority {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
+
+            
+            /* Otimização para iPhone SE e similares (altura <= 667px) */
+            @media (max-height: 667px) and (max-width: 768px) {
+                .mobile-form-priority {
+                    min-height: 75vh;
+                    padding-top: 2rem;
+                    padding-bottom: 1rem;
+                }
+                
+                .mobile-form-card {
+                    padding: 1rem;
+                }
+                
+                .mobile-form-card .mb-6 {
+                    margin-bottom: 0.75rem !important;
+                }
+                
+                .mobile-form-card .mb-8 {
+                    margin-bottom: 1rem !important;
+                }
+                
+                .mobile-form-card h3 {
+                    font-size: 1.75rem !important;
+                    margin-bottom: 0.75rem !important;
+                }
+                
+                .mobile-form-card p {
+                    font-size: 0.9rem !important;
+                    margin-bottom: 1rem !important;
+                }
+            }
+            
+            /* Otimização para iPhone 12 mini e similares (altura 700-850px) */
+            @media (min-height: 668px) and (max-height: 850px) and (max-width: 768px) {
+                .mobile-form-priority {
+                    min-height: 80vh;
+                    padding-top: 3rem;
+                    padding-bottom: 1.5rem;
+                }
+                
+                .mobile-form-card {
+                    padding: 1.25rem;
+                }
+            }
+            
+            /* Otimização para telas mobile altas (altura > 850px) */
+            @media (min-height: 851px) and (max-width: 768px) {
+                .mobile-form-priority {
+                    min-height: 85vh;
+                    padding-top: 6rem;
+                    padding-bottom: 2rem;
+                }
+            }
+            
+            /* Otimização extrema para iPhone SE (320x568) */
+            @media (max-height: 568px) and (max-width: 768px) {
+                .mobile-form-priority {
+                    min-height: 70vh;
+                    padding-top: 1rem;
+                    padding-bottom: 0.5rem;
+                }
+                
+                .mobile-form-card {
+                    padding: 0.75rem;
+                }
+                
+                .mobile-form-card h3 {
+                    font-size: 1.5rem !important;
+                    margin-bottom: 0.5rem !important;
+                }
+                
+                .mobile-form-card p {
+                    font-size: 0.8rem !important;
+                    margin-bottom: 0.75rem !important;
+                }
+                
+                .mobile-form-card input {
+                    padding: 0.75rem !important;
+                    font-size: 1rem !important;
+                }
+                
+                .mobile-form-card button {
+                    padding: 0.75rem !important;
+                    font-size: 1rem !important;
+                }
+            }
+            
+            /* Reduz espaçamentos internos do formulário no mobile */
+            @media (max-width: 768px) {
+                #whatsappFormSection .mb-6 {
+                    margin-bottom: 1rem !important;
+                }
+                
+                #whatsappFormSection .mb-8 {
+                    margin-bottom: 1.5rem !important;
+                }
             }
         }
         
@@ -208,7 +310,7 @@
 </head>
 <body class="min-h-screen bg-white">
     <!-- Seletor de Cidade com Logo -->
-    <div class="bg-gradient-to-r from-red-800 to-red-900 text-white py-3 shadow-md mobile-header-compact">
+    <div class="bg-gradient-to-r from-red-800 to-red-900 text-white py-3 md:py-3 shadow-md mobile-header-compact">
         <div class="max-w-7xl mx-auto px-4">
             <div class="hidden md:flex items-center justify-between">
                 <div class="flex items-center">
@@ -254,7 +356,7 @@
     </div>
 
     <!-- Formulário WhatsApp -->
-    <section id="whatsappFormSection" class="min-h-screen flex items-center justify-center py-20 md:py-32 bg-gradient-to-r from-red-800 to-red-900 relative overflow-hidden mobile-form-priority">
+    <section id="whatsappFormSection" class="md:min-h-screen flex items-center justify-center py-10 md:py-32 bg-gradient-to-r from-red-800 to-red-900 relative overflow-hidden mobile-form-priority">
         <div class="container mx-auto px-4">
             <div class="max-w-md mx-auto">
                 <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 p-10 md:p-12 text-center transform-hover transition-all duration-300 relative z-10 hover:shadow-3xl hover:scale-105 mobile-form-card">
@@ -271,7 +373,7 @@
                             </div>
                             <span class="text-3xl md:text-4xl font-bold text-red-600 tracking-wider">DESKTOP</span>
                         </div>
-                        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Fale com um Consultor</h3>
+                        <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Assine Desktop Hoje</h3>
                         <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-8">Digite seu WhatsApp e fale com um consultor Desktop</p>
                     </div>
                     
@@ -434,7 +536,7 @@
                 
                 <div class="text-center md:text-right">
                     <h4 class="text-xl font-bold mb-4">ATENDIMENTO AO CLIENTE</h4>
-                    <p class="text-red-100 mb-2 text-2xl font-bold">0800 010 4004</p>
+                    <p class="text-red-100 mb-2 text-2xl font-bold">0800 017 4004</p>
                     <p class="text-red-100">Segunda à Sábado: 9h às 22h</p>
                     <p class="text-red-100">Domingo e Feriados: 9h às 15h</p>
                 </div>
@@ -1018,7 +1120,7 @@
                 
                 const submitButton = this.querySelector('button[type="submit"]');
                 const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = 'Enviando...';
+                submitButton.innerHTML = 'Abrindo Conversa...';
                 submitButton.disabled = true;
                 
                 // Enviar webhook e aguardar conclusão
@@ -1087,7 +1189,7 @@
                 
                 const submitButton = this.querySelector('button[type="submit"]');
                 const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = 'Enviando...';
+                submitButton.innerHTML = 'Abrindo Conversa...';
                 submitButton.disabled = true;
                 
                 // Enviar webhook e aguardar conclusão
